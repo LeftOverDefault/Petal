@@ -1,5 +1,4 @@
-// deno-lint-ignore-file no-empty-interface
-// https://github.com/tlaceby/guide-to-interpreters-series
+// https://github.com/LeftOverDefault/Petal
 // -----------------------------------------------------------
 // --------------          AST TYPES        ------------------
 // ---     Defines the structure of our languages AST      ---
@@ -56,6 +55,7 @@ export interface FuncDeclaration extends Stmt {
 }
 
 /**  Expressions will result in a value at runtime unlike Statements */
+// deno-lint-ignore no-empty-interface
 export interface Expr extends Stmt { }
 
 export interface AssignmentExpr extends Expr {

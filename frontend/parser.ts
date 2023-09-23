@@ -1,4 +1,9 @@
-// deno-lint-ignore-file no-explicit-any
+// https://github.com/LeftOverDefault/Petal
+// ------------------------------------------------------------
+// -----------------          PARSER          -----------------
+// ---  Receives inputs and breaks them up into attributes  ---
+// ------------------------------------------------------------
+
 import {
     AssignmentExpr,
     BinaryExpr,
@@ -51,6 +56,7 @@ export default class Parser {
      * Returns the previous token and then advances the tokens array to the next value.
      *  Also checks the type of expected token and throws if the values dnot match.
     */
+    // deno-lint-ignore no-explicit-any
     private expect(type: TokenType, err: any) {
         const prev = this.tokens.shift() as Token;
         if (!prev || prev.type != type) {
