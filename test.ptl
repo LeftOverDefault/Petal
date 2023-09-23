@@ -1,0 +1,3 @@
+const var: string = "Hello world";
+
+print(var)
