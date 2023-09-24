@@ -35,13 +35,13 @@ export function createGlobalEnv() {
     env.declareVar("time", MK_NATIVE_FUNC(timeFunc), true);
 
     // Boolean Logic Function
-    env.declareVar("not", MK_NATIVE_FUNC((args, _scope) => { return notFunc(args, env); }), true);
-    env.declareVar("or", MK_NATIVE_FUNC((args, _scope) => { return orFunc(args, env); }), true);
-    env.declareVar("nor", MK_NATIVE_FUNC((args, _scope) => { return norFunc(args, env); }), true);
-    env.declareVar("and", MK_NATIVE_FUNC((args, _scope) => { return andFunc(args, env); }), true);
-    env.declareVar("nand", MK_NATIVE_FUNC((args, _scope) => { return nandFunc(args, env); }), true);
-    env.declareVar("xor", MK_NATIVE_FUNC((args, _scope) => { return xorFunc(args, env); }), true);
-    env.declareVar("xnor", MK_NATIVE_FUNC((args, _scope) => { return xnorFunc(args, env); }), true);
+    env.declareVar("not", MK_NATIVE_FUNC((args, _scope) => { return notFunc(args, env); }), false);
+    env.declareVar("or", MK_NATIVE_FUNC((args, _scope) => { return orFunc(args, env); }), false);
+    env.declareVar("nor", MK_NATIVE_FUNC((args, _scope) => { return norFunc(args, env); }), false);
+    env.declareVar("and", MK_NATIVE_FUNC((args, _scope) => { return andFunc(args, env); }), false);
+    env.declareVar("nand", MK_NATIVE_FUNC((args, _scope) => { return nandFunc(args, env); }), false);
+    env.declareVar("xor", MK_NATIVE_FUNC((args, _scope) => { return xorFunc(args, env); }), false);
+    env.declareVar("xnor", MK_NATIVE_FUNC((args, _scope) => { return xnorFunc(args, env); }), false);
 
     return env;
 }
