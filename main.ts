@@ -23,7 +23,7 @@ async function _run(filename: string) {
     const program = parser.produceAST(input);
 
     const _result = evaluate(program, env);
-    // console.log(result);
+    // console.log(_result);
 }
 
 function _repl() {
@@ -46,6 +46,6 @@ function _repl() {
         const program = parser.produceAST(input);
 
         const _result = evaluate(program, env);
-        // console.log(result);
+        // console.log(_result);
     }
 }

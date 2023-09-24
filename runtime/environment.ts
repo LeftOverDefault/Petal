@@ -1,10 +1,4 @@
-import {
-    MK_BOOL,
-    MK_NATIVE_FUNC,
-    MK_NULL,
-    RuntimeVal,
-} from "./values.ts";
-
+import { MK_BOOL, MK_NATIVE_FUNC, MK_NULL, RuntimeVal } from "./values.ts";
 import { andFunc, nandFunc, norFunc, notFunc, orFunc, printFunc, timeFunc, xnorFunc, xorFunc } from "./functions.ts";
 
 export function createGlobalEnv() {
