@@ -36,17 +36,12 @@ export default class Environment {
     private constants: Set<string>;
 
     constructor(parentENV?: Environment) {
-        // const global = parentENV ? true : false;
         this.parent = parentENV;
         this.variables = new Map();
         this.constants = new Set();
     }
 
-    public declareVar(
-        varname: string,
-        value: RuntimeVal,
-        constant: boolean
-    ): RuntimeVal {
+    public declareVar(varname: string, value: RuntimeVal, constant: boolean): RuntimeVal {
         if (this.variables.has(varname)) {
             throw `Cannot declare variable ${varname}. As it already is defined.`;
         }
