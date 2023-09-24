@@ -2,6 +2,8 @@ import Parser from "./frontend/parser.ts";
 import { createGlobalEnv } from "./runtime/environment.ts";
 import { evaluate } from "./runtime/interpreter.ts";
 
+console.clear();
+console.log("Run program (run) / Run repl (repl):");
 const input = prompt(">>>");
 
 if (input !== null) {
@@ -13,6 +15,7 @@ if (input !== null) {
 }
 
 async function _run(filename: string) {
+    console.clear();
     const parser = new Parser();
     const env = createGlobalEnv();
 
@@ -24,11 +27,12 @@ async function _run(filename: string) {
 }
 
 function _repl() {
+    console.clear();
     const parser = new Parser();
     const env = createGlobalEnv();
 
     // INITIALIZE REPL
-    console.log("\nRepl v0.1");
+    console.log("Petal v0.1.0\n");
 
     // Continue Repl Until User Stops Or Types `exit`
     while (true) {
