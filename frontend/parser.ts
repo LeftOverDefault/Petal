@@ -144,7 +144,8 @@ export default class Parser {
 
         let dataType = "";
 
-        if (this.eat().type == TokenType.Colon) {
+        if (this.at().type == TokenType.Colon) {
+            this.eat()
             dataType = this.eat().value;
         }
 
@@ -160,6 +161,7 @@ export default class Parser {
                 constant: false,
             } as VarDeclaration;
         }
+
 
         this.expect(
             TokenType.Equals,
@@ -229,7 +231,6 @@ export default class Parser {
             identifier,
             constant: isConstant,
         } as VarDeclaration;
-
 
         this.expect(TokenType.Semicolon, "Variable declaration statment must end with semicolon.");
 
@@ -399,7 +400,7 @@ export default class Parser {
                 // get identifier
                 property = this.parse_primary_expr();
                 if (property.kind != "Identifier") {
-                    throw `Cannonot use dot operator without right hand side being a identifier`;
+                    throw `Cannot use dot operator without right hand side being of type identifier`;
                 }
             } else { // this allows obj[computedValue]
                 computed = true;
