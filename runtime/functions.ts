@@ -1,5 +1,18 @@
 import Environment from "./environment.ts";
-import { MK_BOOL, MK_NUMBER, RuntimeVal } from "./values.ts";
+import { MK_BOOL, MK_NULL, MK_NUMBER, RuntimeVal } from "./values.ts";
+
+export function printFunc(args: RuntimeVal[], _env: Environment) {
+    const result: string[] = [];
+    for (let i = 0; i < args.length; i++) {
+        result.push(String(args[i].value))
+    }
+    let newResult = "";
+    for (let j = 0; j < args.length; j++) {
+        newResult += result[j] + " ";
+    }
+    console.log(newResult);
+    return MK_NULL();
+}
 
 export function timeFunc(_args: RuntimeVal[], _env: Environment) {
     return MK_NUMBER(Date.now());

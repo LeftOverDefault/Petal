@@ -5,7 +5,7 @@ import {
     RuntimeVal,
 } from "./values.ts";
 
-import { andFunc, nandFunc, norFunc, notFunc, orFunc, timeFunc, xnorFunc, xorFunc } from "./functions.ts";
+import { andFunc, nandFunc, norFunc, notFunc, orFunc, printFunc, timeFunc, xnorFunc, xorFunc } from "./functions.ts";
 
 export function createGlobalEnv() {
     const env = new Environment();
@@ -15,23 +15,7 @@ export function createGlobalEnv() {
     env.declareVar("null", MK_NULL(), true);
 
     // Define a native builtin method
-    env.declareVar(
-        "print", MK_NATIVE_FUNC((args, _scope) => {
-            const result: string[] = [];
-            for (let i = 0; i < args.length; i++) {
-                result.push(String(args[i].value))
-            }
-            let newResult = "";
-            for (let j = 0; j < args.length; j++) {
-                newResult += result[j] + " ";
-            }
-            console.log(newResult);
-            return MK_NULL();
-        }), true
-    );
-
-
-
+    env.declareVar("print", MK_NATIVE_FUNC((args, _scope) => { return printFunc(args, env); }), true);
     env.declareVar("time", MK_NATIVE_FUNC(timeFunc), true);
 
     // Boolean Logic Function
