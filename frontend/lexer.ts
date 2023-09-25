@@ -64,6 +64,18 @@ function isskippable(str: string) {
     return str == " " || str == "\n" || str == "\t" || str == "\r";
 }
 
+function issinglecomment(src: string) {
+    return src == "//";
+}
+
+function isstartblockcomment(src: string) {
+    return src == "/*";
+}
+
+function isendblockcomment(src: string) {
+    return src == "*/";
+}
+
 /**
  Return whether the character is a valid integer -> [0-9]
  */
@@ -100,7 +112,7 @@ export function tokenize(sourceCode: string): Token[] {
         } else if (src[0] == "]") {
             tokens.push(token(src.shift(), TokenType.CloseBracket));
         } // HANDLE BINARY OPERATORS
-        else if (src[0] == "+" || src[0] == "-" || src[0] == "*" || src[0] == "/" || src[0] == "%") {
+        else if (src[0] == "+" || src[0] == "-" /*|| src[0] == "*" || src[0] == "/"*/ || src[0] == "%") {
             tokens.push(token(src.shift(), TokenType.BinaryOperator));
         } // Handle Conditional & Assignment Tokens
         else if (src[0] == "=") {
@@ -146,7 +158,18 @@ export function tokenize(sourceCode: string): Token[] {
             } else if (isskippable(src[0])) {
                 // Skip uneeded chars.
                 src.shift();
-            } // Handle unreconized characters.
+            } else if (issinglecomment(String(src[0]) + String(src[1]))) {
+                while (src[0] !== "\r") {
+                    src.shift();
+                }
+            } else if (isstartblockcomment(String(src[0]) + String(src[1]))) {
+                while (!isendblockcomment(String(src[0]) + String(src[1]))) {
+                    src.shift();
+                }
+            } else if (isendblockcomment(String(src[0]) + String(src[1]))) {
+                src.shift();
+                src.shift();
+            }// Handle unreconized characters.
             // TODO: Impliment better errors and error recovery.
             else {
                 console.error(

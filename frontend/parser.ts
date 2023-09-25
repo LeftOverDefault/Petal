@@ -174,6 +174,7 @@ export default class Parser {
             while (this.at().type !== TokenType.Quote) {
                 resultString += this.eat().value + " ";
             }
+            resultString = resultString + "\b";
             const result = {
                 kind: "StringLiteral",
                 value: String(resultString),
@@ -363,10 +364,7 @@ export default class Parser {
 
     private parse_args(): Expr[] {
         this.expect(TokenType.OpenParen, "Expected open parenthesis");
-        const args = this.at().type == TokenType.CloseParen
-            ? []
-            : this.parse_arguments_list();
-
+        const args = this.at().type == TokenType.CloseParen ? [] : this.parse_arguments_list();
         this.expect(
             TokenType.CloseParen,
             "Missing closing parenthesis inside arguments list",
@@ -441,13 +439,22 @@ export default class Parser {
 
             case TokenType.Quote: {
                 this.eat()
-                const result = {
-                    kind: "StringLiteral",
-                    value: String(this.eat().value),
-                } as StringLiteral;
-                // console.log(this.at());
-                this.eat();
-                return result;
+
+                if (this.at().value !== "\"") {
+                    const result = {
+                        kind: "StringLiteral",
+                        value: String(this.eat().value),
+                    } as StringLiteral;
+                    this.eat();
+                    return result;
+                } else {
+                    const result = {
+                        kind: "StringLiteral",
+                        value: "",
+                    } as StringLiteral;
+                    this.eat();
+                    return result;
+                }
             }
 
             // Grouping Expressions

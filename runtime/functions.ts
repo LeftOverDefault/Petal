@@ -1,5 +1,5 @@
 import Environment from "./environment.ts";
-import { MK_BOOL, MK_NULL, MK_NUMBER, RuntimeVal } from "./values.ts";
+import { MK_BOOL, MK_NULL, MK_NUMBER, MK_STRING, RuntimeVal } from "./values.ts";
 
 export function printFunc(args: RuntimeVal[], _env: Environment) {
     const result: string[] = [];
@@ -8,7 +8,11 @@ export function printFunc(args: RuntimeVal[], _env: Environment) {
     }
     let newResult = "";
     for (let j = 0; j < args.length; j++) {
-        newResult += result[j] + " ";
+        if (j !== args.length) {
+            newResult += result[j] + " ";
+        } else {
+            newResult += result[j];
+        }
     }
     console.log(newResult);
     return MK_NULL();
@@ -113,5 +117,18 @@ export function xnorFunc(args: RuntimeVal[], _env: Environment) {
         } else {
             return MK_BOOL(true);
         }
+    }
+}
+
+export function petalFunc(_args: RuntimeVal[], _env: Environment) {
+    return MK_NULL()
+}
+
+export function promptFunc(args: RuntimeVal[], _env: Environment) {
+    const output = prompt(args[0].value);
+    if (output !== null) {
+        return MK_STRING(output);
+    } else {
+        return MK_NULL();
     }
 }

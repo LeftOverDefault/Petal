@@ -47,6 +47,10 @@ export interface StringVal extends RuntimeVal {
     value: string;
 }
 
+export function MK_STRING(args = "") {
+    return { type: "string", value: args } as StringVal;
+}
+
 /**
  * Runtime value that has access to the raw native javascript number.
  */

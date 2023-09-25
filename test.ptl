@@ -1,0 +1,7 @@
+let val: string = "hello world";
+print(val)
+
+// Comment
+/*
+Block Comments
+*/
