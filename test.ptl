@@ -1,9 +1,9 @@
 let var = "hi";
 
 if (var) {
-    print(var)
+    print("true")
 } elif (var) {
-    print(var)
+    print("false")
 } else {
-    print(var)
+    print("neither")
 }
