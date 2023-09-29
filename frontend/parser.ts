@@ -114,7 +114,7 @@ export default class Parser {
             default:
                 return this.parse_expr();
         }
-    };
+    }
 
     parse_if_statement() {
         this.eat(); // move past if keyword
