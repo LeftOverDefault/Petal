@@ -218,8 +218,6 @@ export default class Parser {
         return func;
     }
 
-    // LET IDENT;
-    // ( LET | CONST ) IDENT = EXPR;
     parse_var_declaration(): Stmt {
         const isConstant = this.eat().type == TokenType.Const;
         const identifier = this.expect(
