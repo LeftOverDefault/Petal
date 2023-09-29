@@ -7,20 +7,20 @@
 import {
     AssignmentExpr,
     BinaryExpr,
+    BooleanLiteral,
     CallExpr,
     Expr,
+    FuncDeclaration,
     Identifier,
+    IfStmt,
     MemberExpr,
     NumericLiteral,
     ObjectLiteral,
     Program,
     Property,
     Stmt,
-    VarDeclaration,
-    FuncDeclaration,
     StringLiteral,
-    BooleanLiteral,
-    IfStmt
+    VarDeclaration,
 } from "./ast.ts";
 
 import { Token, tokenize, TokenType } from "./lexer.ts";
@@ -114,16 +114,7 @@ export default class Parser {
             default:
                 return this.parse_expr();
         }
-    }
-    // Orders Of Prescidence
-    // Assignment
-    // Object
-    // AdditiveExpr
-    // MultiplicitaveExpr
-    // Call
-    // Member
-    // PrimaryExpr
-
+    };
 
     parse_if_statement() {
         this.eat(); // move past if keyword
