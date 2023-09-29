@@ -19,7 +19,8 @@ import {
     VarDeclaration,
     FuncDeclaration,
     StringLiteral,
-    BooleanLiteral
+    BooleanLiteral,
+    IfStmt
 } from "./ast.ts";
 
 import { Token, tokenize, TokenType } from "./lexer.ts";
@@ -67,6 +68,7 @@ export default class Parser {
         return prev;
     }
 
+
     public produceAST(sourceCode: string): Program {
         this.tokens = tokenize(sourceCode);
         const program: Program = {
@@ -74,11 +76,13 @@ export default class Parser {
             body: [],
         };
 
+
         // Parse until end of file
         while (this.not_eof()) {
             program.body.push(this.parse_stmt());
         }
 
+        console.log(program);
         return program;
     }
 
@@ -91,11 +95,26 @@ export default class Parser {
                 return this.parse_var_declaration();
             case TokenType.Func:
                 return this.parse_func_declaration();
+            case TokenType.If:
+                return this.parse_if_statement();
             default:
                 return this.parse_expr();
         }
     }
 
+    public ParseStatement() {
+        switch (this.at().type) {
+            case TokenType.Let:
+            case TokenType.Const:
+                return this.parse_var_declaration();
+            case TokenType.Func:
+                return this.parse_func_declaration();
+            case TokenType.If:
+                return this.parse_if_statement();
+            default:
+                return this.parse_expr();
+        }
+    }
     // Orders Of Prescidence
     // Assignment
     // Object
@@ -104,6 +123,81 @@ export default class Parser {
     // Call
     // Member
     // PrimaryExpr
+
+
+    parse_if_statement() {
+        this.eat(); // move past if keyword
+        this.expect(TokenType.OpenParen, "Must enclose condition in parentheses");
+        if (this.at().type === TokenType.CloseParen) {
+            throw "Missing conditional statement";
+        }
+
+        const condition = this.parse_expr();
+
+        this.expect(TokenType.CloseParen, "Must enclose condition in parentheses");
+
+        const ifBody = this.parse_block();
+        // use this to store potential else if statements
+        const elseIfBlocks = [];
+        // stores the final else statement if it exists
+        let elseBlock = null;
+
+        // now we check for elseIf blocks
+        while (this.not_eof() && this.at().type === TokenType.Elif) {
+            this.eat(); // move past keyword
+
+            // expect parentheses and an expression that evaluates to true/false
+            this.expect(TokenType.OpenParen, "Must enclose condition in parentheses");
+
+            // if no expression, throw error
+            if (this.at().type === TokenType.CloseParen) {
+                throw "Missing conditional statement";
+            }
+
+            // parse conditional
+            const elseIfCondition = this.parse_expr();
+
+            this.expect(TokenType.CloseParen, "Must enclose condition in parentheses");
+
+            const elseIfBody = this.parse_block();
+            elseIfBlocks.push({ condition: elseIfCondition, body: elseIfBody });
+        }
+
+        // check for else block
+        if (this.at().type === TokenType.Else) {
+            this.eat();
+            elseBlock = this.parse_block();
+        }
+
+        return {
+            kind: "IfStatement",
+            condition,
+            ifBody,
+            elseIfBlocks,
+            elseBlock,
+        } as IfStmt;
+    }
+
+    // can be merged with the parseFuncBody. Will do that later
+    parse_block() {
+        this.expect(TokenType.OpenBrace, "Missing curly brace to define block body");
+
+        if (this.at().type === TokenType.CloseBrace) {
+            throw "Missing block body";
+        }
+
+        const statements = [];
+
+        while (this.not_eof() && this.at().type !== TokenType.CloseBrace) {
+            statements.push(this.parse_stmt());
+        }
+        this.expect(
+            TokenType.CloseBrace,
+            "Missing closing curly brace for block statement"
+        );
+
+        return statements;
+    }
 
     parse_func_declaration(): Stmt {
         this.eat() // Eat func keyword
@@ -161,8 +255,6 @@ export default class Parser {
                 constant: false,
             } as VarDeclaration;
         }
-
-
         this.expect(
             TokenType.Equals,
             "Expected equals token following identifier in var declaration.",
@@ -321,9 +413,7 @@ export default class Parser {
     private parse_multiplicitave_expr(): Expr {
         let left = this.parse_call_member_expr();
 
-        while (
-            this.at().value == "/" || this.at().value == "*" || this.at().value == "%"
-        ) {
+        while (this.at().value == "/" || this.at().value == "*" || this.at().value == "%") {
             const operator = this.eat().value;
             const right = this.parse_call_member_expr();
             left = {

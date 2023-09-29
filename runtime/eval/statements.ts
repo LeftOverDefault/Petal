@@ -19,7 +19,7 @@ export function eval_var_declaration(declaration: VarDeclaration, env: Environme
     return env.declareVar(declaration.identifier, value, declaration.constant);
 }
 
-export function eval_func_declaration(declaration: FuncDeclaration, env: Environment,): RuntimeVal {
+export function eval_func_declaration(declaration: FuncDeclaration, env: Environment): RuntimeVal {
     // Create new function scope
     const func = {
         type: "func",

@@ -2,6 +2,7 @@ import Environment from "./environment.ts";
 import { MK_BOOL, MK_NULL, MK_NUMBER, MK_STRING, RuntimeVal } from "./values.ts";
 
 export function printFunc(args: RuntimeVal[], _env: Environment) {
+    console.log(args)
     const result: string[] = [];
     for (let i = 0; i < args.length; i++) {
         result.push(String(args[i].value))

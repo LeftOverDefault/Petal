@@ -1,7 +1,9 @@
-let val: string = "hello world";
-print(val)
+let var = "hi";
 
-// Comment
-/*
-Block Comments
-*/
+if (var) {
+    print(var)
+} elif (var) {
+    print(var)
+} else {
+    print(var)
+}

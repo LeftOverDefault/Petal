@@ -9,6 +9,7 @@ export type NodeType =
     | "Program"
     | "VarDeclaration"
     | "FuncDeclaration"
+    | "IfStatement"
     // EXPRESSIONS
     | "AssignmentExpr"
     | "MemberExpr"
@@ -52,6 +53,18 @@ export interface FuncDeclaration extends Stmt {
     body: Stmt[];
     // async: boolean;
     // arrow: boolean;
+}
+
+export interface IfStmt extends Stmt {
+    kind: "IfStatement";
+    condition: Expr;
+    ifBody: Stmt[];
+    elseIfBlocks: {
+        condition: Expr;
+        body: Stmt[];
+    }[];
+
+    elseBlock: Stmt[] | null;
 }
 
 /**  Expressions will result in a value at runtime unlike Statements */
